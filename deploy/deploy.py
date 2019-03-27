@@ -21,13 +21,11 @@ def create_or_update_environment(ssh):
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
                          "~/{}/environment.yml".format(git_repo_name))
-    print(stderr.read())
 
     if b'already exists' in stderr.read():
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
                              "~/{}/environment.yml".format(git_repo_name))
-        print(stderr.read())
 
 
 def git_clone(ssh):
@@ -43,13 +41,14 @@ def git_clone(ssh):
         if b'already exists' in stderr.read():
             cd_and_pull_repo = "cd " + git_repo_name + "; git pull"
             stdin, stdout, stderr = ssh.exec_command(cd_and_pull_repo)
-            print(stderr.read())
 
 
 def start_cron_tab(ssh):
     ssh.exec_command("crontab -r")
-    cronline = "* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/" + git_repo_name + "/calculate_driving_time.py"
-    ssh.exec_command("crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
+    cronline = "* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/" + \
+               git_repo_name + "/calculate_driving_time.py"
+    ssh.exec_command(
+        "crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
 
 
 def main():
