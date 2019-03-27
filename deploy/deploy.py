@@ -46,7 +46,7 @@ def git_clone(ssh):
 def start_cron_tab(ssh):
     ssh.exec_command("crontab -r")
     cronline = "* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/" + \
-               git_repo_name + "/calculate_driving_time.py"
+               git_repo_name + "/deploy/calculate_driving_time.py"
     ssh.exec_command(
         "crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
 
