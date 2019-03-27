@@ -3,7 +3,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - appnope=0.1.0
   - attrs=19.1.0
   - backcall=0.1.0
   - bleach=3.1.0
@@ -88,9 +87,7 @@ dependencies:
     - requests==2.21.0
     - rsa==3.4.2
     - s3transfer==0.2.0
-    - scispacy==0.1.0
     - soupsieve==1.8
-    - spacy==2.0.18
     - thinc==6.12.1
     - toolz==0.9.0
     - tqdm==4.31.1
