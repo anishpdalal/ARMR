@@ -20,30 +20,35 @@ def ssh_connection(ssh, ec2_address, user, key_file):
 def create_or_update_environment(ssh):
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
-                         "~/msds603_instructor/environment.yml")
-    if (b'already exists' in stderr.read()):
+                         "~/{}/environment.yml".format(git_repo_name))
+
+    if b'already exists' in stderr.read():
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
-                             "~/msds603_instructor/environment.yml")
+                             "~/{}/environment.yml".format(git_repo_name))
 
 
 def git_clone(ssh):
+    # ---- HOMEWORK ----- #
     stdin, stdout, stderr = ssh.exec_command("git --version")
-    if (b"" is stderr.read()):
+    print(stderr.read())
+
+    if b"" is stderr.read():
         git_clone_command = "git clone https://github.com/" + \
                             git_user_id + "/" + git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        print(stdout.read())
-        print(stderr.read())
 
-        # ---- HOMEWORK ----- #
+        # if git repo already exists, pull
+        if b'already exists' in stderr.read():
+            cd_and_pull_repo = "cd " + git_repo_name + "; git pull"
+            stdin, stdout, stderr = ssh.exec_command(cd_and_pull_repo)
 
 
 def main():
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
-    create_or_update_environment(ssh)
     git_clone(ssh)
+    #create_or_update_environment(ssh)
 
 
 if __name__ == '__main__':
