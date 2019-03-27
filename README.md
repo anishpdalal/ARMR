@@ -1,5 +1,5 @@
-# ARMOR
-Automated Medical Transcription
+# ARMR
+Audio Recorded Medical Record
 
 ## Initial Setup
 1. conda env create -f environment.yml
