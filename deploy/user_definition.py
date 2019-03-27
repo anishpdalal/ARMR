@@ -1,4 +1,4 @@
-ec2_address = "ec2-18-237-108-171.us-west-2.compute.amazonaws.com"
+ec2_address = "ec2-54-191-39-26.us-west-2.compute.amazonaws.com"
 user = "ec2-user"
 key_file = "/nkkacirek.pem"
 git_repo_owner = "MSDS698"
