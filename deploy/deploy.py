@@ -46,11 +46,18 @@ def git_clone(ssh):
             print(stderr.read())
 
 
+def start_cron_tab(ssh):
+    ssh.exec_command("crontab -r")
+    cronline = "* * * * * ~/.conda/envs/MSDS603/bin/python /home/ec2-user/" + git_repo_name + "/calculate_driving_time.py"
+    ssh.exec_command("crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
+
+
 def main():
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
     git_clone(ssh)
     create_or_update_environment(ssh)
+    start_cron_tab(ssh)
 
 
 if __name__ == '__main__':
