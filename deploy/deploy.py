@@ -51,6 +51,11 @@ def start_cron_tab(ssh):
         "crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
 
 
+def logout(ssh):
+    stdin, stdout, stderr = ssh.exec_command("logout")
+    ssh.close()
+
+
 def main():
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
