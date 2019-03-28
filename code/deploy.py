@@ -36,8 +36,10 @@ def git_clone(ssh):
     stdin, stdout, stderr = ssh.exec_command("git --version")
 
     if b"" is stderr.read():
-        git_clone_command = "git clone https://dianewoodbridge@github.com/MSDS698/ARMR.git"
-        #git_clone_command = "git clone https://nkacirek1@github.com/MSDS698/ARMR.git"
+        git_clone_command = "git clone \
+            https://dianewoodbridge@github.com/MSDS698/ARMR.git"
+        # git_clone_command = "git clone \
+        # https://nkacirek1@github.com/MSDS698/ARMR.git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
 
         # if git repo already exists, pull
