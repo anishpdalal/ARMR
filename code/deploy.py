@@ -11,6 +11,7 @@ def ssh_client():
 
 
 def ssh_connection(ssh, ec2_address, user, key_file):
+    """Connect to a specified ec2 instance"""
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ec2_address, username=user,
                 key_filename=expanduser("~") + key_file)
@@ -18,6 +19,7 @@ def ssh_connection(ssh, ec2_address, user, key_file):
 
 
 def create_or_update_environment(ssh):
+    """Generate or update an enviornment.yml file with all dependencies"""
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
                          "~/{}/environment.yml".format(git_repo_name))
@@ -29,7 +31,8 @@ def create_or_update_environment(ssh):
 
 
 def git_clone(ssh):
-    # ---- HOMEWORK ----- #
+    """Clones specified repo if not present, otherwise \
+        updates repo via git pull command"""
     stdin, stdout, stderr = ssh.exec_command("git --version")
 
     if b"" is stderr.read():
@@ -44,6 +47,7 @@ def git_clone(ssh):
 
 
 def start_cron_tab(ssh):
+    """Calculates driving time periodically"""
     ssh.exec_command("crontab -r")
     cronline = "* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/" + \
                git_repo_name + "/deploy/calculate_driving_time.py"
@@ -52,11 +56,14 @@ def start_cron_tab(ssh):
 
 
 def logout(ssh):
+    """Close ssh connection"""
     stdin, stdout, stderr = ssh.exec_command("logout")
     ssh.close()
 
 
 def main():
+    """Connect to a specified ec2 instance and create/update a \
+        conda environment"""
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
     git_clone(ssh)
