@@ -33,20 +33,19 @@ def git_clone(ssh):
     stdin, stdout, stderr = ssh.exec_command("git --version")
 
     if b"" is stderr.read():
-        git_clone_command = "git clone https://github.com/" + \
-                            git_repo_owner + "/" + git_repo_name + ".git"
+        git_clone_command = "git clone https://github.com/MSDS698/ARMR.git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
 
         # if git repo already exists, pull
         if b'already exists' in stderr.read():
-            cd_and_pull_repo = "cd " + git_repo_name + "; git pull"
+            cd_and_pull_repo = "cd ARMR; git pull"
             stdin, stdout, stderr = ssh.exec_command(cd_and_pull_repo)
 
 
 def start_cron_tab(ssh):
     ssh.exec_command("crontab -r")
     cronline = "* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/" + \
-               git_repo_name + "/deploy/calculate_driving_time.py"
+        "ARMR/deploy/calculate_driving_time.py"
     ssh.exec_command(
         "crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
 
