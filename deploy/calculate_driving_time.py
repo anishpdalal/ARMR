@@ -11,7 +11,6 @@ url = "https://maps.googleapis.com/maps/api/distancematrix/json?" \
       "key={0}&origins={1}&destinations={2}&mode=driving&departure_time=now" \
       "&language=en-EN&sensor=false".\
     format(str(apikey), str(orig_coord), str(dest_coord))
-print(url)
 result = simplejson.load(urllib.request.urlopen(url))
 driving_time = result['rows'][0]['elements'][0]['duration_in_traffic']['text']
 
