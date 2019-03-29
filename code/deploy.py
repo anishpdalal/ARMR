@@ -52,7 +52,7 @@ def start_cron_tab(ssh):
     """Calculates driving time periodically"""
     ssh.exec_command("crontab -r")
     cronline = "* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/" + \
-        "ARMR/deploy/calculate_driving_time.py"
+        "ARMR/code/calculate_driving_time.py"
     ssh.exec_command(
         "crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
 
