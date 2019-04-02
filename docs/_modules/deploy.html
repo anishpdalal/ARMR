@@ -87,7 +87,7 @@
     <span class="sd">&quot;&quot;&quot;Calculates driving time periodically&quot;&quot;&quot;</span>
     <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;crontab -r&quot;</span><span class="p">)</span>
     <span class="n">cronline</span> <span class="o">=</span> <span class="s2">&quot;* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/&quot;</span> <span class="o">+</span> \
-        <span class="s2">&quot;ARMR/deploy/calculate_driving_time.py&quot;</span>
+        <span class="s2">&quot;ARMR/code/calculate_driving_time.py&quot;</span>
     <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span>
         <span class="s2">&quot;crontab -l | { cat; echo </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">cronline</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">; } | crontab -&quot;</span><span class="p">)</span></div>
 
