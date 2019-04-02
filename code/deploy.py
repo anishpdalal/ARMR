@@ -71,7 +71,8 @@ def main():
     git_clone(ssh)
     create_or_update_environment(ssh)
     start_cron_tab(ssh)
-
+    logout(ssh)
+    
 
 if __name__ == '__main__':
     main()
