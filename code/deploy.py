@@ -21,7 +21,8 @@ def ssh_connection(ssh, ec2_address, user, key_file):
 def create_or_update_environment(ssh):
     """Generate or update an enviornment.yml file with all dependencies"""
     stdin, stdout, stderr = ssh.exec_command("sudo yum -y install gcc")
-    stdin, stdout, stderr = ssh.exec_command("git checkout spacy-functions")
+    stdin, stdout, stderr = ssh.exec_command("git -C {} checkout \
+        spacy-functions".format(git_repo_name))
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
                          "~/{}/environment.yml".format(git_repo_name))
@@ -67,15 +68,16 @@ def logout(ssh):
 def deploy_model(ssh):
     """Pull model from S3"""
     if aws_access_key_id and aws_secret_access_key:
-        stdin, stdout, stderr = ssh.exec_command("mkdir .aws")
+        stdin, stdout, stderr = ssh.exec_command("mkdir ~/.aws")
         if b"File exists" not in stderr.read():
-            stdin, stdout, stderr = ssh.exec_command("touch .aws/credentials")
+            stdin, stdout, stderr = ssh.exec_command(
+                "touch ~/.aws/credentials")
             stdin, stdout, stderr = ssh.exec_command("echo [default] >> \
-                .aws/credentials")
+                ~/.aws/credentials")
             stdin, stdout, stderr = ssh.exec_command("echo aws_access_key_id = \
-                {} >> .aws/credentials".format(aws_access_key_id))
+                {} >> ~/.aws/credentials".format(aws_access_key_id))
             stdin, stdout, stderr = ssh.exec_command("echo aws_secret_access_key = \
-                {} >> .aws/credentials".format(aws_secret_access_key))
+                {} >> ~/.aws/credentials".format(aws_secret_access_key))
             stdin, stdout, stderr = ssh.exec_command(
                 "rm -rf ~/{}/models".format(git_repo_name))
             stdin, stdout, stderr = ssh.exec_command(
@@ -87,7 +89,6 @@ def deploy_model(ssh):
                 "mkdir ~/{}/models".format(git_repo_name))
         stdin, stdout, stderr = ssh.exec_command("~/.conda/envs/msds603/bin/python /home/{}/ \
             {}/code/pull_model_from_s3.py".format(user, git_repo_name))
-        print(stdout.read())
         ssh.exec_command("tar -xzf *.gz -C ~/{}/models".format(git_repo_name))
 
 
