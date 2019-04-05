@@ -7,3 +7,6 @@ git_user_id = "nkacirek1"
 orig_coord = '37.7909,-122.3925'
 dest_coord = '37.7765,-122.4506'
 output_file_name = 'output.txt'
+aws_access_key_id = None
+aws_secret_access_key = None
+bucket_name = 'msds-armr'
