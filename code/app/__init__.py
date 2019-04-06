@@ -4,6 +4,8 @@ import os
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf import FlaskForm
+
 
 # Initialization
 # Create an application instance (an object of class Flask)  which handles all requests.
