@@ -9,5 +9,12 @@ ARMR
 {% endblock %}
 
 {% block content %}
-  <h1>Hello, ARMR</h1>
+<div align="center">
+    <figure class="figure">
+    <img src={{ url_for('static', filename='logo.png') }} class="figure-img img-fluid img-rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+    </figure>
+
+    <br>
+    <h1>Audio Recorded Medical Record</h1>
+</div>
 {% endblock %}
