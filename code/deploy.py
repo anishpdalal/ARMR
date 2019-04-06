@@ -51,15 +51,6 @@ def git_clone(ssh):
             stdin, stdout, stderr = ssh.exec_command(cd_and_pull_repo)
 
 
-def start_cron_tab(ssh):
-    """Calculates driving time periodically"""
-    ssh.exec_command("crontab -r")
-    cronline = "* * * * * ~/.conda/envs/msds603/bin/python /home/ec2-user/" + \
-        "ARMR/code/calculate_driving_time.py"
-    ssh.exec_command(
-        "crontab -l | { cat; echo \"" + cronline + "\"; } | crontab -")
-
-
 def logout(ssh):
     """Close ssh connection"""
     stdin, stdout, stderr = ssh.exec_command("logout")
@@ -88,10 +79,10 @@ def deploy_model(ssh):
                 "rm -rf ~/{}/models".format(git_repo_name))
             stdin, stdout, stderr = ssh.exec_command(
                 "mkdir ~/{}/models".format(git_repo_name))
-        stdin, stdout, stderr = ssh.exec_command("~/.conda/envs/msds603/bin/aws \
+        stdin, stdout, stderr = ssh.exec_command("~/.conda/envs/armr/bin/aws \
             s3 ls msds-armr --recursive | sort | tail -n 1 | awk '{print $4}'")
         model = stdout.read().strip().decode("utf-8")
-        stdin, stdout, stderr = ssh.exec_command(f"~/.conda/envs/msds603/bin/aws \
+        stdin, stdout, stderr = ssh.exec_command(f"~/.conda/envs/armr/bin/aws \
             s3 cp s3://{bucket_name}/{model} ~/en_ner_bc5cdr_md-0.1.0.zip")
         time.sleep(5)
         stdin, stdout, stderr = ssh.exec_command("unzip ~/en_ner_bc5cdr_md-0.1.0 -d \
