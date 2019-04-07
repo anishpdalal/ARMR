@@ -1,18 +1,67 @@
 from pathlib import Path
 import random
 import spacy
+from spacy.matcher import PhraseMatcher
 from spacy.util import minibatch, compounding
+
+TERMINOLOGY = [
+        "history of present illness", "past medical and \
+        surgical history", "past medical history", "review of systems", "family \
+        history", "social history", "medications prior to admission",
+        "allergies", "physical examination", "electrocardiogram", "impression",
+        "recommendations"]
 
 
 def load_model(model_dir):
     return spacy.load(model_dir)
 
 
+def prepare_note(model, text):
+    note_sections = categorize_note(model, text)
+    print(note_sections)
+    for section in note_sections:
+        diseases, medications = parse_entities(model, note_sections[section][
+            'text'])
+        note_sections[section]['diseases'] = diseases
+        note_sections[section]['medications'] = medications
+    return note_sections
+
+
+def categorize_note(model, text):
+    categories = {}
+    matcher = PhraseMatcher(model.vocab)
+    patterns = [model.make_doc(text) for text in TERMINOLOGY]
+    matcher.add("Categories", None, *patterns)
+    doc_lower = model(text.lower())
+    doc = model(text)
+    matches = matcher(doc_lower)
+    results = []
+    for match_id, start, end in matches:
+        span = doc_lower[start:end]
+        results.append((span, start, end))
+    results = sorted(results, key=lambda tup: tup[1])
+    for i in range(len(results)):
+        result = results[i]
+        next_result = results[i+1] if i < len(results)-1 else None
+        category = result[0]
+        start = result[2] + 1
+        end = next_result[1] - 1 if next_result else None
+        if end:
+            categories[category] = {'text': doc[start:end].text}
+        else:
+            categories[category] = {'text': doc[start:].text}
+    return categories
+
+
 def parse_entities(model, text):
-    entities = []
+    diseases = []
+    medications = []
     for entity in model(text).ents:
-        entities.append((entity, entity.label_))
-    return entities
+        if entity.label_ == 'DISEASE':
+            diseases.append({'name': entity})
+        else:
+            medications.append({'name': entity})
+    return diseases, medications
 
 
 def train(model, train_data, output_dir, n_iter=100):
