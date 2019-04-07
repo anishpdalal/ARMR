@@ -3,13 +3,12 @@ from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired
 from app import db, login_manager
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
 
     def __init__(self, username, email, password):
@@ -45,8 +44,8 @@ class Verification(db.Model):
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username (Email):', validators=[DataRequired(), Email()])
-    access_code = StringField('Access Code:', validators=[DataRequired()])
+    username = StringField('Username (Email):', validators=[DataRequired()])
+    email = StringField('Email:', validators=[DataRequired()])
     password = PasswordField('Password:', validators = [DataRequired()])
     password_confirmation = PasswordField('Repeat Password:', validators=[DataRequired()]) #Need to be same as the other one.
     submit = SubmitField('Submit')
@@ -56,10 +55,6 @@ class LogInForm(FlaskForm):
     username = StringField('Username:', validators=[DataRequired()])
     password = PasswordField('Password:', validators=[DataRequired()])
     submit = SubmitField('Login')
-
-
-db.create_all()
-db.session.commit()
 
 
 @login_manager.user_loader
