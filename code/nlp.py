@@ -18,7 +18,6 @@ def load_model(model_dir):
 
 def prepare_note(model, text):
     note_sections = categorize_note(model, text)
-    print(note_sections)
     for section in note_sections:
         diseases, medications = parse_entities(model, note_sections[section][
             'text'])
