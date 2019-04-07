@@ -16,7 +16,6 @@ ARMR
       width: 20vw;
       border-style: solid;
       border-width: 1px;
-      margin-top: 10px;
       margin-bottom: 10px;
       border-color: rgba(128,128,128);
     }
@@ -27,7 +26,6 @@ ARMR
     <img src={{ url_for('static', filename='logo2.png') }} class="figure-img img-fluid img-rounded">
     </figure>
 
-    <br>
     <h1>Audio Recorded Medical Record</h1>
 </div>
 <br>
@@ -40,6 +38,10 @@ ARMR
         {{ wtf.form_field(form.password) }}
         <center>{{ wtf.form_field(form.submit)}}</center>
     </form>
-</br>
+    <br>
+    <center><a href="/register">Create new account</a></center>
+    <br>
 </div>
 {% endblock %}
+
+
