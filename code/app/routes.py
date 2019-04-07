@@ -3,9 +3,24 @@ from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
 from classes import LogInForm, RegistrationForm, User
 
-@application.route('/')
+@application.route('/', methods=('GET', 'POST'))
 def index():
-    return render_template('index.html')
+
+    login_form = LogInForm()
+    if login_form.validate_on_submit():
+        username = login_form.username.data
+        password = login_form.password.data
+        # Look for it in the database.
+        user = User.query.filter_by(username=username).first()
+
+        # Login and validate the user.
+        if user is not None and user.check_password(password):
+            login_user(user)
+            return redirect(url_for('alert'))
+        else:
+            flash('Invalid username and password combination!')
+
+    return render_template('index.html', form=login_form)
 
 
 @application.route('/register', methods=('GET', 'POST'))
