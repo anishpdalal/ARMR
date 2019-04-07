@@ -2,21 +2,19 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-Register
+Login
 {% endblock %}
 
 {% block content %}
 <div class="container">
-
-    <form method="POST"> <!-- post : handle submission -->
-        <h2>Sign Up</h2>
-        {{ form.hidden_tag() }}    
+    <form method="POST">
+        <h2>Login</h2>
+        {{ form.hidden_tag() }}
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
-        {{ wtf.form_field(form.password_confirmation) }}
         <center> {{ wtf.form_field(form.submit)}} </center>
     </form>
-    <br/>
-    <center> Already have an account? <a href="login">Log in</a> </center>
+</br>
+<center> Don't have an account? <a href="mailto:dwoodbridge@usfca.edu?Subject=Project%20X%20Registration" target="_top"> Please contact Diane.</a> </center>
 </div> <!-- /container -->
 {% endblock %}
