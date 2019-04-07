@@ -14,7 +14,6 @@ def index():
 
 @application.before_request
 def make_session_permanent():
-    flash('asdf')
     session.permanent = True
     application.permanent_session_lifetime = timedelta(minutes=30)
 
@@ -32,7 +31,6 @@ def register():
             flash(form.errors) #spits out any and all errors**
 
     if form.validate_on_submit():
-        flash('fds')
         user = User(form.username.data,
                     form.email.data,
                     form.password.data)
