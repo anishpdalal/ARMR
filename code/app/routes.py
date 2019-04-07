@@ -1,7 +1,10 @@
 from app import application, classes, db
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
-from classes import LogInForm, RegistrationForm, User
+from classes import LogInForm, RegistrationForm, User, UploadFileForm
+from werkzeug import secure_filename
+import os
+
 
 @application.route('/', methods=('GET', 'POST'))
 def index():
@@ -97,4 +100,27 @@ def logout():
 @login_required
 def secret_page():
     return render_template('secret.html', name=current_user.username, email=current_user.email)
+
+
+@application.route('/upload', methods=['GET', 'POST'])
+# @login_required
+def upload():
+    """upload a file from a client machine."""
+    file = UploadFileForm()  
+    if file.validate_on_submit():  
+        f = file.file_selector.data  
+        filename = secure_filename(f.filename)
+        file_dir_path = os.path.join(application.instance_path, 'files')
+        file_path = os.path.join(file_dir_path, filename)
+        f.save(file_path) # Save file to file_path (instance/ + 'files' + filename)
+
+        return redirect(url_for('results'))  # Redirect to / (/index) page.
+    return render_template('upload.html', form=file)
+
+
+@application.route('/results', methods=['GET', 'POST'])
+# @login_required
+def results():
+    """upload a file from a client machine."""
+    return render_template('results.html')
 

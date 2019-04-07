@@ -10,17 +10,16 @@ File Upload
 {% endblock %}
 
 {% block content %}
+
+<center><h2>File Upload</h2></center>
+<br>
+
 <div class="container">
-
     <form method="POST" enctype="multipart/form-data"> <!-- post : handle submission -->
-        <h2>File Upload</h2>
-        <br>
-        {{ wtf.form_field(form.alerts) }}
-        <br>
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token }} <!--  render the form's CSRF field like normal. -->
         {{ wtf.form_field(form.file_selector) }}
-
-        <center> {{ wtf.form_field(form.submit)}} </center>
+        <br/>
+        {{ form.submit }}
     </form>
     <br/>
 </div> <!-- /container -->
