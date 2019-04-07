@@ -1,0 +1,38 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+File Upload
+{% endblock %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .container {
+      width: 25vw;
+      border-style: solid;
+      border-width: 1px;
+      margin-bottom: 10px;
+      border-color: rgba(128,128,128);
+    }
+</style>
+
+<center><h2>Upload Audio</h2></center>
+<br>
+
+<div class="container">
+	<br>
+    <form method="POST" enctype="multipart/form-data"> <!-- post : handle submission -->
+        {{ form.csrf_token }} <!--  render the form's CSRF field like normal. -->
+        {{ wtf.form_field(form.file_selector) }}
+        <br/>
+        {{ wtf.form_field(form.submit)}}
+    </form>
+    <br/>
+</div> <!-- /container -->
+
+{% endblock %}

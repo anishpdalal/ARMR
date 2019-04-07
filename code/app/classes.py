@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email
 from app import db, login_manager
+from flask_wtf.file import FileField, FileRequired
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,3 +66,9 @@ db.session.commit()
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+
+class UploadFileForm(FlaskForm):
+    """Class for uploading file when submitted"""
+    file_selector = FileField('File', validators=[FileRequired()])
+    submit = SubmitField('Submit')
