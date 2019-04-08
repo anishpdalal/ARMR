@@ -1,7 +1,7 @@
-from app import application, classes, db
+from app import application, db
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
-from classes import LogInForm, RegistrationForm, User, UploadFileForm
+from app.classes import LogInForm, RegistrationForm, User, UploadFileForm
 from werkzeug import secure_filename
 import os
 
