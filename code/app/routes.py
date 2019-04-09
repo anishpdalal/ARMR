@@ -32,7 +32,6 @@ def register():
 
     if form.validate_on_submit():
         user = User(form.username.data,
-                    form.email.data,
                     form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -43,7 +42,7 @@ def register():
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LogInForm()
-    if True:
+    if login_form.validate_on_submit():
         username = login_form.username.data
         password = login_form.password.data
 

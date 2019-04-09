@@ -1,12 +1,22 @@
-<!doctype html>
-<title>My Application</title>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-{% block body %}{% endblock %}
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <form method="POST"> <!-- post : handle submission -->
+        <h2>Sign Up</h2>
+        {{ form.hidden_tag() }}    
+        {{ wtf.form_field(form.username) }}
+        {{ wtf.form_field(form.password) }}
+        {{ wtf.form_field(form.password_confirmation) }}
+        <center> {{ wtf.form_field(form.submit)}} </center>
+    </form>
+    <br/>
+    <center> Already have an account? <a href="login">Log in</a> </center>
+</div> <!-- /container -->
+{% endblock %}
