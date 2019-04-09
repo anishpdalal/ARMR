@@ -1,7 +1,9 @@
 from app import application, classes, db
-from flask import render_template, redirect, url_for, flash, request, session, g
+from flask import render_template, redirect, url_for, \
+    flash, request, session, g
 from flask_login import current_user, login_user, login_required, logout_user
-from classes import LogInForm, RegistrationForm, User
+from classes import User
+from forms import LogInForm, RegistrationForm
 from app import db, login_manager
 from datetime import timedelta
 from flask_wtf import FlaskForm
@@ -27,8 +29,8 @@ def load_user(id):  # id is the ID in User.
 def register():
     form = RegistrationForm(request.form, null=True, blank=True)
     if request.method == 'POST':
-        if form.validate() == False:
-            flash(form.errors) #spits out any and all errors**
+        if form.validate() is False:
+            flash(form.errors)  # spits out any and all errors
 
     if form.validate_on_submit():
         user = User(form.username.data,
@@ -76,4 +78,3 @@ def logout():
 @login_required
 def secret_page():
     return render_template('secret.html', name=current_user.username)
-
