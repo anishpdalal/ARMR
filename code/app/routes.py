@@ -1,9 +1,9 @@
-from app import application, classes, db
+from app import application, db
 from flask import render_template, redirect, url_for, \
     flash, request, session, g
 from flask_login import current_user, login_user, login_required, logout_user
-from classes import User
-from forms import LogInForm, RegistrationForm, UploadFileForm
+from app.classes import User
+from app.forms import LogInForm, RegistrationForm, UploadFileForm
 from app import db, login_manager
 from datetime import timedelta
 from flask_wtf import FlaskForm
