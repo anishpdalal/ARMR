@@ -13,7 +13,6 @@ import os
 
 @application.route('/', methods=('GET', 'POST'))
 def index():
-
     login_form = LogInForm()
     if login_form.validate_on_submit():
         username = login_form.username.data
@@ -24,7 +23,7 @@ def index():
         # Login and validate the user.
         if user is not None and user.check_password(password):
             login_user(user)
-            return redirect(url_for('alert'))
+            return redirect(url_for('upload'))
         else:
             flash('Invalid username and password combination!')
 
@@ -58,26 +57,6 @@ def register():
     return render_template('register.html', form=form)
 
 
-@application.route('/login', methods=['GET', 'POST'])
-def login():
-    login_form = LogInForm()
-    if login_form.validate_on_submit():
-        username = login_form.username.data
-        password = login_form.password.data
-
-        # Look for it in the database.
-        user = User.query.filter_by(username=username).first()
-
-        # Login and validate the user.
-        if user is not None and user.check_password(password):
-            login_user(user)
-            return redirect(url_for('secret_page'))
-        else:
-            flash('Invalid username and password combination!')
-
-    return render_template('login.html', form=login_form)
-
-
 @application.route('/logout')
 @login_required
 def logout():
@@ -91,14 +70,8 @@ def logout():
     return before_logout + after_logout
 
 
-@application.route('/secret_page')
-@login_required
-def secret_page():
-    return render_template('secret.html', name=current_user.username)
-
-
 @application.route('/upload', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def upload():
     """upload a file from a client machine."""
     file = UploadFileForm()  
@@ -114,7 +87,7 @@ def upload():
 
 
 @application.route('/results', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def results():
     """upload a file from a client machine."""
     return render_template('results.html')
