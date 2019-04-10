@@ -6,3 +6,5 @@ models/
 code/__pycache__
 code/app/__pycache__
 *.db
+*.idea
+scraping/transcriptions.txt
