@@ -15,3 +15,9 @@ class LogInForm(FlaskForm):
     username = StringField('Username:', validators=[DataRequired()])
     password = PasswordField('Password:', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+
+class UploadFileForm(FlaskForm):
+    """Class for uploading file when submitted"""
+    file_selector = FileField('File', validators=[FileRequired()])
+    submit = SubmitField('Submit')
