@@ -1,12 +1,47 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}This is an example page{% endblock %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+ARMR
+{% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-fixed-top">
-  <!-- ... -->
-</div>
+	{% include 'navbar.html' %}
 {% endblock %}
 
 {% block content %}
-  <h1>Hello, Bootstrap</h1>
+
+<style>
+    .container {
+      width: 20vw;
+      border-style: solid;
+      border-width: 1px;
+      margin-bottom: 10px;
+      border-color: rgba(128,128,128);
+    }
+</style>
+
+<div align="center">
+    <figure class="figure">
+    <img src={{ url_for('static', filename='logo2.png') }} class="figure-img img-fluid img-rounded">
+    </figure>
+
+    <h1>Audio Recorded Medical Record</h1>
+</div>
+<br>
+
+<div class="container" style="border-width: thin;">
+    <form method="POST">
+        <br>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.username) }}
+        {{ wtf.form_field(form.password) }}
+        <center>{{ wtf.form_field(form.submit)}}</center>
+    </form>
+    <br>
+    <center><a href="{{url_for('register')}}">Create new account</a></center>
+    <br>
+</div>
 {% endblock %}
+
+

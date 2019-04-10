@@ -4,3 +4,5 @@ notebooks/.ipynb_checkpoints
 **/*.vscode
 models/
 code/__pycache__
+code/app/__pycache__
+*.db

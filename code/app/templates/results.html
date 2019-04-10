@@ -1,0 +1,49 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Results
+{% endblock %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+<style>
+	.text_box {
+	  width: 30vw;
+      border-style: solid;
+      border-width: 2px;
+      margin-bottom: 10px;
+      border-color: rgba(0,0,0);
+      padding-left: 15px;
+	}
+</style>
+
+
+<center><h1>Results Page</h1></center>
+
+<div class="container">
+	<h2>Diagnosis</h2>
+	<div class="text_box">
+		<h4>Diseases</h4>
+			<ul>
+			  <li>Flu</li>
+			  <li>Cold</li>
+			</ul>
+	</div>
+</div>
+
+<div class="container">
+	<h2>Perscription</h2>
+	<div class="text_box">
+		<h4>Chemicals</h4>
+			<ul>
+			  <li>Antibiotics</li>
+			  <li>Tylenol</li>
+			</ul>
+	</div>
+</div>
+
+{% endblock %}
