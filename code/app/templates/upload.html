@@ -28,6 +28,7 @@ File Upload
 	<br>
     <form method="POST" enctype="multipart/form-data"> <!-- post : handle submission -->
         {{ form.csrf_token }} <!--  render the form's CSRF field like normal. -->
+        {{ wtf.form_field(form.mrn) }}
         {{ wtf.form_field(form.file_selector) }}
         <br/>
         {{ wtf.form_field(form.submit)}}
