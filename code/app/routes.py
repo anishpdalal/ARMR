@@ -9,6 +9,7 @@ from datetime import timedelta
 from flask_wtf import FlaskForm
 from werkzeug import secure_filename
 import os
+from app.static_result import example_result
 
 
 @application.route('/', methods=('GET', 'POST'))
@@ -81,8 +82,10 @@ def upload():
     return render_template('upload.html', form=file)
 
 
-@application.route('/results', methods=['GET', 'POST'])
+@application.route('/results/', methods=['GET', 'POST'])
 @login_required
 def results():
-    """upload a file from a client machine."""
-    return render_template('results.html')
+    """Display the model results."""
+    proper_title_keys = [k.title() for k in list(example_result.keys())]
+
+    return render_template('results.html', titles=proper_title_keys, result=example_result)
