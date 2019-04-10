@@ -1,21 +1,17 @@
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
-from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Email
 from app import db, login_manager
 from flask_wtf.file import FileField, FileRequired
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, password):
         self.username = username
-        self.email = email
         self.set_password(password)
 
     def set_password(self, password):
@@ -28,10 +24,10 @@ class User(db.Model, UserMixin):
 class Verification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(120), nullable=False)
-    
+
     def __init__(self, code):
         self.code = code
-    
+
     def check_code(self, input):
         return check_password_hash(self.code, input)
 
@@ -45,30 +41,10 @@ class Verification(db.Model):
         return len(input) >= 8
 
 
-class RegistrationForm(FlaskForm):
-    username = StringField('Username (Email):', validators=[DataRequired(), Email()])
-    access_code = StringField('Access Code:', validators=[DataRequired()])
-    password = PasswordField('Password:', validators = [DataRequired()])
-    password_confirmation = PasswordField('Repeat Password:', validators=[DataRequired()]) #Need to be same as the other one.
-    submit = SubmitField('Submit')
-
-
-class LogInForm(FlaskForm):
-    username = StringField('Username:', validators=[DataRequired()])
-    password = PasswordField('Password:', validators=[DataRequired()])
-    submit = SubmitField('Login')
-
-
-db.create_all()
-db.session.commit()
-
-
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
 
-class UploadFileForm(FlaskForm):
-    """Class for uploading file when submitted"""
-    file_selector = FileField('File', validators=[FileRequired()])
-    submit = SubmitField('Submit')
+db.create_all()
+db.session.commit()

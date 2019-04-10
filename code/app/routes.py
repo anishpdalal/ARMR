@@ -1,7 +1,12 @@
 from app import application, db
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, \
+    flash, request, session, g
 from flask_login import current_user, login_user, login_required, logout_user
-from app.classes import LogInForm, RegistrationForm, User, UploadFileForm
+from app.classes import User
+from app.forms import LogInForm, RegistrationForm, UploadFileForm
+from app import db, login_manager
+from datetime import timedelta
+from flask_wtf import FlaskForm
 from werkzeug import secure_filename
 import os
 
@@ -26,42 +31,31 @@ def index():
     return render_template('index.html', form=login_form)
 
 
+@application.before_request
+def make_session_permanent():
+    session.permanent = True
+    application.permanent_session_lifetime = timedelta(minutes=30)
+
+
+@login_manager.user_loader
+def load_user(id):  # id is the ID in User.
+    return User.query.get(int(id))
+
+
 @application.route('/register', methods=('GET', 'POST'))
 def register():
-    registration_form = RegistrationForm()
-    if registration_form.validate_on_submit():
-        username = registration_form.username.data
-        password = registration_form.password.data
-        password_confirmation = registration_form.password_confirmation.data
-        # verification_code_input = registration_form.access_code.data
-        
-        verification = Verification.query.first() 
+    form = RegistrationForm(request.form, null=True, blank=True)
+    if request.method == 'POST':
+        if form.validate() is False:
+            flash(form.errors)  # spits out any and all errors
 
-        user_count = User.query.filter_by(username=username).count()
-
-        error_count = 0
-        if(password != password_confirmation):
-            error_count = error_count + 1 
-            flash('Error - Password Mismatch<br/>' )
-        
-        # if(not verification.check_code(verification_code_input)):
-        #     error_count = error_count + 1 
-        #     flash('Error - Invalid Access Code<br/>' )
-
-        if(not (verification.check_pwd_digit(password) and verification.check_pwd_upper(password) and verification.check_pwd_length(password))):
-            error_count = error_count + 1 
-            flash('Error - Password should be at least 8 digits with at least one number and one uppercase<br/>' )
-        
-        if(user_count > 0):
-            error_count = error_count + 1 
-            flash('Error - Existing user : ' + username + '<br/>')
-            
-        if(error_count == 0):
-            user = User(username, password)
-            db.session.add(user)
-            db.session.commit()
-            return redirect(url_for('login'))
-    return render_template('register.html', form=registration_form)
+    if form.validate_on_submit():
+        user = User(form.username.data,
+                    form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 
 @application.route('/login', methods=['GET', 'POST'])
@@ -70,13 +64,14 @@ def login():
     if login_form.validate_on_submit():
         username = login_form.username.data
         password = login_form.password.data
+
         # Look for it in the database.
         user = User.query.filter_by(username=username).first()
 
         # Login and validate the user.
         if user is not None and user.check_password(password):
             login_user(user)
-            return redirect(url_for('alert'))
+            return redirect(url_for('secret_page'))
         else:
             flash('Invalid username and password combination!')
 
@@ -99,7 +94,7 @@ def logout():
 @application.route('/secret_page')
 @login_required
 def secret_page():
-    return render_template('secret.html', name=current_user.username, email=current_user.email)
+    return render_template('secret.html', name=current_user.username)
 
 
 @application.route('/upload', methods=['GET', 'POST'])
@@ -123,4 +118,3 @@ def upload():
 def results():
     """upload a file from a client machine."""
     return render_template('results.html')
-
