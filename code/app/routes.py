@@ -12,7 +12,7 @@ import os
 
 
 @application.route('/', methods=('GET', 'POST'))
-@application.route("/index")
+@application.route("/index", methods=('GET', 'POST'))
 def index():
     login_form = LogInForm()
     if login_form.validate_on_submit():
