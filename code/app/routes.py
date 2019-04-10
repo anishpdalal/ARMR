@@ -12,6 +12,7 @@ import os
 
 
 @application.route('/', methods=('GET', 'POST'))
+@application.route("/index")
 def index():
     login_form = LogInForm()
     if login_form.validate_on_submit():
@@ -53,21 +54,15 @@ def register():
                     form.password.data)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
 
 @application.route('/logout')
 @login_required
 def logout():
-    before_logout = '<h1> Before logout - is_autheticated : ' \
-                    + str(current_user.is_authenticated) + '</h1>'
-
     logout_user()
-
-    after_logout = '<h1> After logout - is_autheticated : ' \
-                   + str(current_user.is_authenticated) + '</h1>'
-    return before_logout + after_logout
+    return redirect(url_for('index'))
 
 
 @application.route('/upload', methods=['GET', 'POST'])
