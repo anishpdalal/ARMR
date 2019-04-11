@@ -91,6 +91,12 @@ def upload():
             audio = r.record(source)
         print(r.recognize_google(audio))
 
+        # delete the file
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        else:
+            print("The file does not exist.")
+
         # TODO: pipe results from talk to text to nlp model
         # TODO: pipe model results to results page as arguement
 
