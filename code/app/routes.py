@@ -93,7 +93,7 @@ def results():
 
     """upload a file from a client machine."""
 
-    ind = 5
+    ind = 0
     physician_id = 4
     transcription_id = 4
     text = "Give patient bandaid."
