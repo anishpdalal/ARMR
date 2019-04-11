@@ -12,6 +12,7 @@ from werkzeug import secure_filename
 from app.static_result import example_result
 import os
 import uuid
+import re
 
 
 @application.route('/', methods=('GET', 'POST'))
@@ -98,30 +99,37 @@ def results():
 
     form = ModelResultsForm()
     if form.validate_on_submit():
-            # Push the results to the DB:
 
-            # ind = 0
-            # physician_id = 4
-            # transcription_id = 4
-            # text = "Give patient bandaid."
-            # entity = "band-aid"
-            # start = 13
-            # end = 19
-            # label = "medication"
-            # subject_id = 2
+        physician_id = 2
+        transcription_id = 1
+        row_info = list()
+        for sub in proper_title_keys:
+            txt = example_result[sub.lower()]["text"]
+            for ent_d in example_result[sub.lower()]["diseases"]:
+                row_info.append((sub, txt, "disease", ent_d["name"]))
+            for ent_m in example_result[sub.lower()]["medications"]:
+                row_info.append((sub, txt, "medication", ent_m["name"]))
+        for t in range(len(row_info)):
+            sub_id = row_info[t][0]
+            txt = row_info[t][1]
+            entity = row_info[t][3]
+            label = row_info[t][2]
+            start = re.search(entity, txt).start()
+            end = re.search(entity, txt).end() - 1
+            upload_row = Data(physician_id=physician_id,
+                              transcription_id=transcription_id,
+                              text=txt,
+                              entity=entity,
+                              start=start,
+                              end=end,
+                              label=label,
+                              subject_id=sub_id)
+            db.session.add(upload_row)
+        db.session.commit()
 
-            # upload = Data(index=ind,
-            #               physician_id=physician_id,
-            #               transcription_id=transcription_id,
-            #               text=text,
-            #               entity=entity,
-            #               start=start,
-            #               end=end,
-            #               label=label,
-            #               subject_id=subject_id)
+        # TODO: query physician id
+        # TODO: autogenerate trainscription id (or maybe make this an identifying string?)
 
-            # db.session.add(upload)
-            # db.session.commit()
         return redirect(url_for('upload'))   	
 
     return render_template('results.html', form=form, titles=proper_title_keys, result=example_result)

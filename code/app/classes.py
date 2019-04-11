@@ -52,24 +52,24 @@ class Data(db.Model):
     Functions to add observations."""
 
     __tablename__ = "transcriptions"
-    index = db.Column(db.Integer, nullable=False, primary_key=True)
+    index = db.Column(db.Integer, primary_key=True)
     physician_id = db.Column(db.String(80), nullable=False)
     transcription_id = db.Column(db.Integer, nullable=False)  # id for specific transcription
     text = db.Column(db.Text, nullable=False)
-    entity = db.Column(db.Text, nullable=False)
-    start = db.Column(db.Integer, nullable=False)
-    end = db.Column(db.Integer, nullable=False)
-    label = db.Column(db.String(100), nullable=False)
+    entity = db.Column(db.Text, nullable=True)
+    start = db.Column(db.Integer, nullable=True)
+    end = db.Column(db.Integer, nullable=True)
+    label = db.Column(db.String(100), nullable=True)
     subject_id = db.Column(db.String(200), nullable=False)  # (reason for visit, diagnosis, etc)
     tz = pytz.timezone("US/Pacific")
     timestamp = db.Column(db.DateTime, default=datetime.now(tz))
 
-    def __init__(self, index, physician_id, transcription_id, text, entity,
+    def __init__(self, physician_id, transcription_id, text, entity,
                  start, end, label, subject_id):
         """Notes:
          - physician_id should be automatically set after logging in, not input each time
          - transcription_id should be  generated per transcription upload"""
-        self.index = index
+        # self.index = index
         self.physician_id = physician_id
         self.transcription_id = transcription_id
         self.text = text  # text per section (i.e. diagnosis, RFV, prescription, etc)
