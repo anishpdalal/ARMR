@@ -11,6 +11,10 @@ ARMR
 
 {% block content %}
 
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
 <style>
     .container {
       width: 20vw;
@@ -30,6 +34,7 @@ ARMR
 </div>
 <br>
 
+{% if not current_user.is_authenticated %}
 <div class="container" style="border-width: thin;">
     <form method="POST">
         <br>
@@ -42,6 +47,14 @@ ARMR
     <center><a href="{{url_for('register')}}">Create new account</a></center>
     <br>
 </div>
+{% else %}
+    <center><h4>{{ current_user.username }}</h4></center>
+    <p>
+    <center><a href="/logout" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-log-out"></span> Log out
+        </a></center>
+{% endif %}
+
 {% endblock %}
 
 

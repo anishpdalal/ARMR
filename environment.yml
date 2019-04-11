@@ -129,6 +129,7 @@ dependencies:
     - awscli==1.16.140
     - blis==0.2.4
     - botocore==1.12.130
+    - colorama==0.3.9
     - conllu==1.3.1
     - cymem==2.0.2
     - cytoolz==0.9.0.1
@@ -143,6 +144,7 @@ dependencies:
     - preshed==2.0.1
     - pyyaml==3.13
     - regex==2018.1.10
+    - rsa==3.4.2
     - scispacy==0.1.0
     - spacy==2.0.18
     - speechrecognition==3.8.1

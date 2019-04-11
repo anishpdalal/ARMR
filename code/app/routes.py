@@ -8,10 +8,13 @@ from app import db, login_manager
 from datetime import timedelta
 from flask_wtf import FlaskForm
 from werkzeug import secure_filename
+from app.static_result import example_result
 import os
 import uuid
 
+
 @application.route('/', methods=('GET', 'POST'))
+@application.route("/index", methods=('GET', 'POST'))
 def index():
     login_form = LogInForm()
     if login_form.validate_on_submit():
@@ -62,14 +65,8 @@ def register():
 @application.route('/logout')
 @login_required
 def logout():
-    before_logout = '<h1> Before logout - is_autheticated : ' \
-                    + str(current_user.is_authenticated) + '</h1>'
-
     logout_user()
-
-    after_logout = '<h1> After logout - is_autheticated : ' \
-                   + str(current_user.is_authenticated) + '</h1>'
-    return before_logout + after_logout
+    return redirect(url_for('index'))
 
 
 @application.route('/upload', methods=['GET', 'POST'])
@@ -88,9 +85,12 @@ def upload():
     return render_template('upload.html', form=file)
 
 
-@application.route('/results', methods=['GET', 'POST'])
+@application.route('/results/', methods=['GET', 'POST'])
 @login_required
 def results():
+    """Display the model results."""
+    proper_title_keys = [k.title() for k in list(example_result.keys())]
+
     """upload a file from a client machine."""
 
     ind = 5
@@ -115,4 +115,4 @@ def results():
 
     db.session.add(upload)
     db.session.commit()
-    return render_template('results.html')
+    return render_template('results.html', titles=proper_title_keys, result=example_result)
