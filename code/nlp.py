@@ -5,10 +5,10 @@ from spacy.matcher import PhraseMatcher
 from spacy.util import minibatch, compounding
 
 TERMINOLOGY = [
-        "history of present illness", "past medical and \
-        surgical history", "past medical history", "review of systems", "family \
-        history", "social history", "medications prior to admission",
-        "allergies", "physical examination", "electrocardiogram", "impression",
+        "history of present illness", "past medical and surgical history",
+        "past medical history", "review of systems", "family history",
+        "social history", "medications prior to admission",
+        "allergies", "physical examination", "electrocardiogram", "impression", 
         "recommendations"]
 
 
@@ -42,9 +42,9 @@ def categorize_note(model, text):
     for i in range(len(results)):
         result = results[i]
         next_result = results[i+1] if i < len(results)-1 else None
-        category = result[0]
-        start = result[2] + 1
-        end = next_result[1] - 1 if next_result else None
+        category = str(result[0])
+        start = result[2] - 1 if i != 0 else result[2] + 1
+        end = next_result[1] - 2 if next_result else None
         if end:
             categories[category] = {'text': doc[start:end].text}
         else:
