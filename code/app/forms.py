@@ -28,3 +28,7 @@ class UploadFileForm(FlaskForm):
     def validate_mrn(form, field):
         if len(str(field.data)) != 7:
             raise ValidationError('MRN must be 7 digits.')
+
+class ModelResultsForm(FlaskForm):
+    """Class for uploading file when submitted"""
+    submit = SubmitField('Submit')

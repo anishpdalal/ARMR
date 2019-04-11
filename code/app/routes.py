@@ -3,7 +3,8 @@ from flask import render_template, redirect, url_for, \
     flash, request, session, g
 from flask_login import current_user, login_user, login_required, logout_user
 from app.classes import User, Data
-from app.forms import LogInForm, RegistrationForm, UploadFileForm
+from app.forms import LogInForm, RegistrationForm, UploadFileForm, \
+    ModelResultsForm 
 from app import db, login_manager
 from datetime import timedelta
 from flask_wtf import FlaskForm
@@ -81,6 +82,10 @@ def upload():
         file_path = os.path.join(file_dir_path, filename)
         f.save(file_path)  # Save file to file_path (instance/ + 'files' + filename)
 
+        # TODO: Call to talk to text
+        # TODO: pipe results from talk to text to nlp model
+        # TODO: pipe model results to results page as arguement
+
         return redirect(url_for('results'))  # Redirect to / (/index) page.
     return render_template('upload.html', form=file)
 
@@ -91,28 +96,32 @@ def results():
     """Display the model results."""
     proper_title_keys = [k.title() for k in list(example_result.keys())]
 
-    """upload a file from a client machine."""
+    form = ModelResultsForm()
+    if form.validate_on_submit():
+            # Push the results to the DB:
 
-    ind = 0
-    physician_id = 4
-    transcription_id = 4
-    text = "Give patient bandaid."
-    entity = "band-aid"
-    start = 13
-    end = 19
-    label = "medication"
-    subject_id = 2
+            # ind = 0
+            # physician_id = 4
+            # transcription_id = 4
+            # text = "Give patient bandaid."
+            # entity = "band-aid"
+            # start = 13
+            # end = 19
+            # label = "medication"
+            # subject_id = 2
 
-    upload = Data(index=ind,
-                  physician_id=physician_id,
-                  transcription_id=transcription_id,
-                  text=text,
-                  entity=entity,
-                  start=start,
-                  end=end,
-                  label=label,
-                  subject_id=subject_id)
+            # upload = Data(index=ind,
+            #               physician_id=physician_id,
+            #               transcription_id=transcription_id,
+            #               text=text,
+            #               entity=entity,
+            #               start=start,
+            #               end=end,
+            #               label=label,
+            #               subject_id=subject_id)
 
-    db.session.add(upload)
-    db.session.commit()
-    return render_template('results.html', titles=proper_title_keys, result=example_result)
+            # db.session.add(upload)
+            # db.session.commit()
+        return redirect(url_for('upload'))   	
+
+    return render_template('results.html', form=form, titles=proper_title_keys, result=example_result)
