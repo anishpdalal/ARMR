@@ -10,7 +10,6 @@ from app import db, login_manager, spacy_model
 from datetime import timedelta, datetime
 from flask_wtf import FlaskForm
 from werkzeug import secure_filename
-from app.static_result import example_result
 import speech_recognition as sr
 import os
 import uuid
