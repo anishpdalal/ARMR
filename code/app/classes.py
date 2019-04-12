@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
 
 
 class Verification(db.Model):
+    """A class of methods to check whether a password is valid."""
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(120), nullable=False)
 
@@ -82,6 +83,7 @@ class Data(db.Model):
 
 @login_manager.user_loader
 def load_user(id):
+    """Get the user with a given user id."""
     return User.query.get(id)
 
 

@@ -7,6 +7,7 @@ from werkzeug import secure_filename
 
 
 class RegistrationForm(FlaskForm):
+    """A FlaskForm to register a new user."""
     username = StringField('Username (Email):', validators=[DataRequired()])
     password = PasswordField('Password:', validators=[DataRequired()])
     password_confirmation = PasswordField('Repeat Password:',
@@ -15,6 +16,7 @@ class RegistrationForm(FlaskForm):
 
 
 class LogInForm(FlaskForm):
+    """A FlaskForm to log in an existing user."""
     username = StringField('Username:', validators=[DataRequired()])
     password = PasswordField('Password:', validators=[DataRequired()])
     submit = SubmitField('Login')
