@@ -128,7 +128,7 @@ def results():
         db.session.commit()
 
         # TODO: query physician id
-        # TODO: autogenerate trainscription id (or maybe make this an identifying string?)
+        # TODO: autogenerate transcription id (or maybe make this an identifying string?)
 
         return redirect(url_for('upload'))   	
 
