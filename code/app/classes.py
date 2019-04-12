@@ -81,5 +81,11 @@ class Data(db.Model):
         self.subject_id = subject_id  # subject id that maps to EMR sections (i.e. diagnosis, RFV, prescription, etc)
 
 
+@login_manager.user_loader
+def load_user(id):
+    """Get the user with a given user id."""
+    return User.query.get(id)
+
+
 db.create_all()
 db.session.commit()
