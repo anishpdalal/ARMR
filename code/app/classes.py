@@ -6,10 +6,10 @@ from flask_wtf.file import FileField, FileRequired
 from datetime import datetime
 import pytz
 
+
 class User(db.Model, UserMixin):
     """Schema for 'users' table in database.
     Functions to add observations."""
-
     __tablename__ = "users"
     id = db.Column(db.String(80), primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -51,34 +51,40 @@ class Verification(db.Model):
 class Data(db.Model):
     """Schema for 'transcriptions' table in database.
     Functions to add observations."""
-
     __tablename__ = "transcriptions"
     index = db.Column(db.Integer, primary_key=True)
     physician_id = db.Column(db.String(80), nullable=False)
-    transcription_id = db.Column(db.Integer, nullable=False)  # id for specific transcription
+    # id for specific transcription
+    transcription_id = Column(db.Integer, nullable=False)
     text = db.Column(db.Text, nullable=False)
     entity = db.Column(db.Text, nullable=True)
     start = db.Column(db.Integer, nullable=True)
     end = db.Column(db.Integer, nullable=True)
     label = db.Column(db.String(100), nullable=True)
-    subject_id = db.Column(db.String(200), nullable=False)  # (reason for visit, diagnosis, etc)
+    # reason for visit, diagnosis, etc
+    subject_id = db.Column(db.String(200), nullable=False)
     tz = pytz.timezone("US/Pacific")
     timestamp = db.Column(db.DateTime, default=datetime.now(tz))
 
     def __init__(self, physician_id, transcription_id, text, entity,
                  start, end, label, subject_id, timestamp):
         """Notes:
-         - physician_id should be automatically set after logging in, not input each time
+         - physician_id should be automatically set after logging in, not input
+           each time
          - transcription_id should be  generated per transcription upload"""
         # self.index = index
         self.physician_id = physician_id
         self.transcription_id = transcription_id
-        self.text = text  # text per section (i.e. diagnosis, RFV, prescription, etc)
-        self.entity = entity  # text selected from model as medical entity from section text
+        # text per section (i.e. diagnosis, RFV, prescription, etc)
+        self.text = text
+        # text selected from model as medical entity from section text
+        self.entity = entity
         self.start = start  # start index of entity in text
         self.end = end  # end index of entity in text
         self.label = label  # label given from model for entity
-        self.subject_id = subject_id  # subject id that maps to EMR sections (i.e. diagnosis, RFV, prescription, etc)
+        # subject id that maps to EMR sections (i.e. diagnosis, RFV,
+        # prescription, etc)
+        self.subject_id = subject_id
         self.timestamp = timestamp
 
 

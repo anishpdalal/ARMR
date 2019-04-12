@@ -29,4 +29,3 @@ spacy_model = spacy.load("{}/models/en_ner_bc5cdr_md-0.1.0".format(par_dir))
 
 from app import classes
 from app import routes  # Added at the bottom to avoid circular dependencies
-
