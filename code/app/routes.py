@@ -94,7 +94,6 @@ def upload():
 def results(filename):
     file_dir_path = os.path.join(application.instance_path, 'files')
     file_path = os.path.join(file_dir_path, filename)
-    print(file_path)
 
     # Convert audio file to text (String)
     r = sr.Recognizer()
@@ -109,10 +108,8 @@ def results(filename):
     else:
         print("The file does not exist.")
 
-    # TODO: pipe results from talk to text to nlp model
+    # pipe results from talk to text to nlp model
     results_dict = prepare_note(spacy_model, talk_to_text)
-
-    # TODO: pipe model results to results page as arguement
 
     """Display the model results."""
     proper_title_keys = [k.title() for k in list(example_result.keys())]
