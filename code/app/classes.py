@@ -55,7 +55,7 @@ class Data(db.Model):
     index = db.Column(db.Integer, primary_key=True)
     physician_id = db.Column(db.String(80), nullable=False)
     # id for specific transcription
-    transcription_id = Column(db.Integer, nullable=False)
+    transcription_id = db.Column(db.Integer, nullable=False)
     text = db.Column(db.Text, nullable=False)
     entity = db.Column(db.Text, nullable=True)
     start = db.Column(db.Integer, nullable=True)
