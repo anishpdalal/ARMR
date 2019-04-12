@@ -100,12 +100,6 @@ def results(filename):
         audio = r.record(source)
     talk_to_text = r.recognize_google(audio)
 
-    # delete the file
-    if os.path.exists(file_path):
-        os.remove(file_path)
-    else:
-        print("The file does not exist.")
-
     # pipe results from talk to text to nlp model
     example_result = prepare_note(spacy_model, talk_to_text)
 
@@ -145,6 +139,12 @@ def results(filename):
 
         # TODO: query physician id
         # TODO: autogenerate transcription id (or maybe make this an identifying string?)
+
+        # delete the file
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        else:
+            print("The file does not exist.")
 
         return redirect(url_for('upload'))
 
