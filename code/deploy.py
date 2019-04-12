@@ -82,9 +82,9 @@ def deploy_model(ssh):
     #     git_repo_name))
     #    else:
     stdin, stdout, stderr = ssh.exec_command(
-                "rm -rf ~/{}/code/app/model".format(git_repo_name))
+                "rm -rf ~/{}/models".format(git_repo_name))
     stdin, stdout, stderr = ssh.exec_command(
-                "mkdir ~/{}/code/app/model".format(git_repo_name))
+                "mkdir ~/{}/models".format(git_repo_name))
     stdin, stdout, stderr = ssh.exec_command("~/.conda/envs/armr/bin/aws \
             s3 ls msds-armr --recursive | sort | tail -n 1 | awk '{print $4}'")
     model = stdout.read().strip().decode("utf-8")
@@ -92,7 +92,7 @@ def deploy_model(ssh):
             s3 cp s3://{bucket_name}/{model} ~/en_ner_bc5cdr_md-0.1.0.zip")
     time.sleep(20)
     stdin, stdout, stderr = ssh.exec_command("unzip ~/en_ner_bc5cdr_md-0.1.0.zip -d \
-            ~/{}/code/app/model/".format(git_repo_name))
+            ~/{}/models/".format(git_repo_name))
     print(stdout.read())
 
 
