@@ -85,31 +85,35 @@ def upload():
         file_path = os.path.join(file_dir_path, filename)
         f.save(file_path)  # Save file to file_path (instance/ + 'files' + filename)
 
-        # Convert audio file to text (String)
-        r = sr.Recognizer()
-        harvard = sr.AudioFile(file_path)
-        with harvard as source:
-            audio = r.record(source)
-        talk_to_text = r.recognize_google(audio)
-
-        # delete the file
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        else:
-            print("The file does not exist.")
-
-        # TODO: pipe results from talk to text to nlp model
-        prepare_note(spacy_model, talk_to_text)
-
-        # TODO: pipe model results to results page as arguement
-
-        return redirect(url_for('results'))  # Redirect to / (/index) page.
+        return redirect(url_for('results', filename=filename))
     return render_template('upload.html', form=file)
 
 
-@application.route('/results/', methods=['GET', 'POST'])
+@application.route('/results/<filename>', methods=['GET', 'POST'])
 @login_required
-def results():
+def results(filename):
+    file_dir_path = os.path.join(application.instance_path, 'files')
+    file_path = os.path.join(file_dir_path, filename)
+    print(file_path)
+
+    # Convert audio file to text (String)
+    r = sr.Recognizer()
+    harvard = sr.AudioFile(file_path)
+    with harvard as source:
+        audio = r.record(source)
+    talk_to_text = r.recognize_google(audio)
+
+    # delete the file
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    else:
+        print("The file does not exist.")
+
+    # TODO: pipe results from talk to text to nlp model
+    results_dict = prepare_note(spacy_model, talk_to_text)
+
+    # TODO: pipe model results to results page as arguement
+
     """Display the model results."""
     proper_title_keys = [k.title() for k in list(example_result.keys())]
 
