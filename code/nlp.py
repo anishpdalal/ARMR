@@ -8,15 +8,18 @@ TERMINOLOGY = [
         "history of present illness", "past medical and surgical history",
         "past medical history", "review of systems", "family history",
         "social history", "medications prior to admission",
-        "allergies", "physical examination", "electrocardiogram", "impression", 
+        "allergies", "physical examination", "electrocardiogram", "impression",
         "recommendations"]
 
 
 def load_model(model_dir):
+    """Takes a file path to model weights and returns a SpaCy model"""
     return spacy.load(model_dir)
 
 
 def prepare_note(model, text):
+    """Output of spaCy text processing containing categories, text, diseases,
+        and medications"""
     note_sections = categorize_note(model, text)
     for section in note_sections:
         diseases, medications = parse_entities(model, note_sections[section][
@@ -27,6 +30,7 @@ def prepare_note(model, text):
 
 
 def categorize_note(model, text):
+    """Breakup notes into different sections"""
     categories = {}
     matcher = PhraseMatcher(model.vocab)
     patterns = [model.make_doc(text) for text in TERMINOLOGY]
@@ -43,8 +47,8 @@ def categorize_note(model, text):
         result = results[i]
         next_result = results[i+1] if i < len(results)-1 else None
         category = str(result[0])
-        start = result[2] - 1 if i != 0 else result[2] + 1
-        end = next_result[1] - 2 if next_result else None
+        start = result[2] if i != 0 else result[2]
+        end = next_result[1] if next_result else None
         if end:
             categories[category] = {'text': doc[start:end].text}
         else:
@@ -53,6 +57,7 @@ def categorize_note(model, text):
 
 
 def parse_entities(model, text):
+    """model identifies clinical text from transcribed text"""
     diseases = []
     medications = []
     for entity in model(text).ents:
@@ -64,6 +69,7 @@ def parse_entities(model, text):
 
 
 def train(model, train_data, output_dir, n_iter=100):
+    """Named Entity Recognition Training loop"""
     other_pipes = [pipe for pipe in model.pipe_names if pipe != "ner"]
     with model.disable_pipes(*other_pipes):
         for itn in range(n_iter):
