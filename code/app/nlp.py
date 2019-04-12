@@ -62,9 +62,9 @@ def parse_entities(model, text):
     medications = []
     for entity in model(text).ents:
         if entity.label_ == 'DISEASE':
-            diseases.append({'name': entity})
+            diseases.append({'name': str(entity)})
         else:
-            medications.append({'name': entity})
+            medications.append({'name': str(entity)})
     return diseases, medications
 
 
