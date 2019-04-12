@@ -16,6 +16,7 @@ def ssh_connection(ssh, ec2_address, user, key_file):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ec2_address, username=user,
                 key_filename=expanduser("~") + key_file)
+    print("SSH connection done.")
     return ssh
 
 
@@ -32,6 +33,8 @@ def create_or_update_environment(ssh):
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
                              "~/{}/environment.yml".format(git_repo_name))
+    print("Git repo cloned/updated.")
+    print("Environment created.")
 
 
 def git_clone(ssh):
@@ -54,6 +57,7 @@ def git_clone(ssh):
 def logout(ssh):
     """Close ssh connection"""
     stdin, stdout, stderr = ssh.exec_command("logout")
+    print("Logged out.")
     ssh.close()
 
 
@@ -89,6 +93,12 @@ def deploy_model(ssh):
             ~/{}/models".format(git_repo_name))
 
 
+def launch_flask(ssh):
+    ssh.exec_command("chmod u+x /home/ec2-user/ARMR/code/flask.sh")
+    ssh.exec_command("bash /home/ec2-user/ARMR/code/flask.sh")
+    print("Flask app running on port 80.")
+
+
 def main():
     """Connect to a specified ec2 instance and create/update a \
         conda environment"""
@@ -97,6 +107,7 @@ def main():
     git_clone(ssh)
     create_or_update_environment(ssh)
     deploy_model(ssh)
+    launch_flask(ssh)
     logout(ssh)
 
 
