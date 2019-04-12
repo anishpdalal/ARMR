@@ -8,3 +8,4 @@ code/app/__pycache__
 *.db
 *.idea
 scraping/transcriptions.txt
+documentation/*
