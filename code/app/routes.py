@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, login_required, logout_user
 from app.classes import User, Data
 from app.forms import LogInForm, RegistrationForm, UploadFileForm, \
     ModelResultsForm 
+from app.nlp import *
 from app import db, login_manager
 from datetime import timedelta
 from flask_wtf import FlaskForm
@@ -98,6 +99,8 @@ def upload():
             print("The file does not exist.")
 
         # TODO: pipe results from talk to text to nlp model
+
+
         # TODO: pipe model results to results page as arguement
 
         return redirect(url_for('results'))  # Redirect to / (/index) page.
