@@ -63,34 +63,37 @@ def logout(ssh):
 
 def deploy_model(ssh):
     """Pull model from S3"""
-    if aws_access_key_id and aws_secret_access_key:
-        stdin, stdout, stderr = ssh.exec_command("mkdir ~/.aws")
-        if b"File exists" not in stderr.read():
-            stdin, stdout, stderr = ssh.exec_command(
-                "touch ~/.aws/credentials")
-            stdin, stdout, stderr = ssh.exec_command("echo [default] >> \
-                ~/.aws/credentials")
-            stdin, stdout, stderr = ssh.exec_command("echo aws_access_key_id = \
-                {} >> ~/.aws/credentials".format(aws_access_key_id))
-            stdin, stdout, stderr = ssh.exec_command("echo aws_secret_access_key = \
-                {} >> ~/.aws/credentials".format(aws_secret_access_key))
-            stdin, stdout, stderr = ssh.exec_command(
-                "rm -rf ~/{}/models".format(git_repo_name))
-            stdin, stdout, stderr = ssh.exec_command(
-                "mkdir ~/{}/models".format(git_repo_name))
-        else:
-            stdin, stdout, stderr = ssh.exec_command(
-                "rm -rf ~/{}/models".format(git_repo_name))
-            stdin, stdout, stderr = ssh.exec_command(
-                "mkdir ~/{}/models".format(git_repo_name))
-        stdin, stdout, stderr = ssh.exec_command("~/.conda/envs/armr/bin/aws \
+    # if aws_access_key_id and aws_secret_access_key:
+    #     stdin, stdout, stderr = ssh.exec_command("mkdir ~/.aws")
+    #     if b"File exists" not in stderr.read():
+    #         stdin, stdout, stderr = ssh.exec_command(
+    #             "touch ~/.aws/credentials")
+    #         stdin, stdout, stderr = ssh.exec_command("echo [default] >> \
+    #             ~/.aws/credentials")
+    #         stdin, stdout, stderr = ssh.exec_command("echo aws_access_key_id
+    # = \
+    #             {} >> ~/.aws/credentials".format(aws_access_key_id))
+    #         stdin, stdout, stderr = ssh.exec_command("echo
+    # aws_secret_access_key = \
+    #             {} >> ~/.aws/credentials".format(aws_secret_access_key))
+    # stdin, stdout, stderr = ssh.exec_command("rm -rf ~/{}/app/models".format(
+    #     git_repo_name))
+    # stdin, stdout, stderr = ssh.exec_command("mkdir ~/{}/app/models".format(
+    #     git_repo_name))
+    #    else:
+    stdin, stdout, stderr = ssh.exec_command(
+                "rm -rf ~/{}/code/app/model".format(git_repo_name))
+    stdin, stdout, stderr = ssh.exec_command(
+                "mkdir ~/{}/code/app/model".format(git_repo_name))
+    stdin, stdout, stderr = ssh.exec_command("~/.conda/envs/armr/bin/aws \
             s3 ls msds-armr --recursive | sort | tail -n 1 | awk '{print $4}'")
-        model = stdout.read().strip().decode("utf-8")
-        stdin, stdout, stderr = ssh.exec_command(f"~/.conda/envs/armr/bin/aws \
+    model = stdout.read().strip().decode("utf-8")
+    stdin, stdout, stderr = ssh.exec_command(f"~/.conda/envs/armr/bin/aws \
             s3 cp s3://{bucket_name}/{model} ~/en_ner_bc5cdr_md-0.1.0.zip")
-        time.sleep(5)
-        stdin, stdout, stderr = ssh.exec_command("unzip ~/en_ner_bc5cdr_md-0.1.0 -d \
-            ~/{}/models".format(git_repo_name))
+    time.sleep(20)
+    stdin, stdout, stderr = ssh.exec_command("unzip ~/en_ner_bc5cdr_md-0.1.0.zip -d \
+            ~/{}/code/app/model/".format(git_repo_name))
+    print(stdout.read())
 
 
 def launch_flask(ssh):
