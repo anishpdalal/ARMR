@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Tutorial &#8212; ARMR 0 documentation</title>
+    <title>Tutorial for Deploying &#8212; ARMR 0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -34,14 +34,30 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tutorial-for-deploying">
+<h1>Tutorial for Deploying<a class="headerlink" href="#tutorial-for-deploying" title="Permalink to this headline">¶</a></h1>
 <ol class="arabic simple">
+<li>Ensure all stated requirements are satisfied in Requirements section</li>
 <li>On your local machine, run git clone <a class="reference external" href="https://github.com/MSDS698/ARMR.git">https://github.com/MSDS698/ARMR.git</a></li>
-<li>Ensure you have the paramiko library installed on your local machine and environment</li>
+<li>run <cite>conda env create -f environment.yml</cite> from command line to get required packages</li>
+<li>run <cite>conda activate armr</cite> in terminal</li>
 <li>cd ARMR/code</li>
-<li>update variables ec2_address and key_file in user_definition.py</li>
-<li>run python deploy.py</li>
+<li>In user_definition.py specify ec2_address, key_file, user as ec2-user, and git_user_id</li>
+<li>run <cite>python deploy.py</cite> in terminal</li>
+</ol>
+</div>
+<div class="section" id="tutorial-for-using-armr">
+<h1>Tutorial for Using ARMR<a class="headerlink" href="#tutorial-for-using-armr" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>go to the EC2 public IP address in your browser</li>
+<li>register if you are a new user</li>
+<li>login with your credentials</li>
+<li>upload audio file (must be a .wav file) and create medical record number</li>
+<li>submit audio file</li>
+<li>review and make appropriate edits</li>
+<li>submit</li>
+<li>repeat steps 5-7 as necessary</li>
+<li>logout</li>
 </ol>
 </div>
 
@@ -67,7 +83,8 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial for Deploying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tutorial-for-using-armr">Tutorial for Using ARMR</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
 
