@@ -91,8 +91,9 @@ def deploy_model(ssh):
     stdin, stdout, stderr = ssh.exec_command(f"~/.conda/envs/armr/bin/aws \
             s3 cp s3://{bucket_name}/{model} ~/en_ner_bc5cdr_md-0.1.0.zip")
     time.sleep(20)
-    stdin, stdout, stderr = ssh.exec_command("unzip ~/en_ner_bc5cdr_md-0.1.0.zip -d \
-            ~/{}/code/app/model/".format(git_repo_name))
+    stdin, stdout, stderr = \
+        ssh.exec_command("unzip ~/en_ner_bc5cdr_md-0.1.0.zip -d \
+        ~/{}/code/app/model/".format(git_repo_name))
     print(stdout.read())
 
 
