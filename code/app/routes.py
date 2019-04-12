@@ -37,12 +37,6 @@ def index():
     return render_template('index.html', form=login_form)
 
 
-# @application.before_request
-# def make_session_permanent():
-#     session.permanent = True
-#     application.permanent_session_lifetime = timedelta(minutes=30)
-
-
 @login_manager.user_loader
 def load_user(id):  # id is the ID in User.
     """Finds the user with the given user id."""
