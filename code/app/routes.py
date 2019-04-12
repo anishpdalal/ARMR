@@ -107,13 +107,14 @@ def results(filename):
         print("The file does not exist.")
 
     # pipe results from talk to text to nlp model
-    results_dict = prepare_note(spacy_model, talk_to_text)
+    example_result = prepare_note(spacy_model, talk_to_text)
 
     """Display the model results."""
     proper_title_keys = [k.title() for k in list(example_result.keys())]
 
     form = ModelResultsForm()
     if form.validate_on_submit():
+        print('going to upload')
 
         physician_id = 2
         transcription_id = 1
@@ -145,6 +146,8 @@ def results(filename):
         # TODO: query physician id
         # TODO: autogenerate transcription id (or maybe make this an identifying string?)
 
-        return redirect(url_for('upload'))   	
+        return redirect(url_for('upload'))
+
+    print('didnt go to upload')
 
     return render_template('results.html', form=form, titles=proper_title_keys, result=example_result)
