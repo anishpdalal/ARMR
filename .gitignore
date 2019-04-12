@@ -9,3 +9,5 @@ code/app/__pycache__
 *.idea
 scraping/transcriptions.txt
 documentation/*
+code/app/*.pyc
+code/*.pyc
