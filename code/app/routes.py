@@ -5,8 +5,8 @@ from flask_login import current_user, login_user, login_required, logout_user
 from app.classes import User, Data
 from app.forms import LogInForm, RegistrationForm, UploadFileForm, \
     ModelResultsForm 
-from app.nlp import *
-from app import db, login_manager
+from app.nlp import prepare_note
+from app import db, login_manager, spacy_model
 from datetime import timedelta
 from flask_wtf import FlaskForm
 from werkzeug import secure_filename
@@ -90,7 +90,7 @@ def upload():
         harvard = sr.AudioFile(file_path)
         with harvard as source:
             audio = r.record(source)
-        print(r.recognize_google(audio))
+        talk_to_text = r.recognize_google(audio)
 
         # delete the file
         if os.path.exists(file_path):
@@ -99,7 +99,7 @@ def upload():
             print("The file does not exist.")
 
         # TODO: pipe results from talk to text to nlp model
-
+        prepare_note(spacy_model, talk_to_text)
 
         # TODO: pipe model results to results page as arguement
 
