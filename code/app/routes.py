@@ -10,6 +10,7 @@ from datetime import timedelta
 from flask_wtf import FlaskForm
 from werkzeug import secure_filename
 from app.static_result import example_result
+import speech_recognition as sr
 import os
 import uuid
 import re
@@ -83,7 +84,19 @@ def upload():
         file_path = os.path.join(file_dir_path, filename)
         f.save(file_path)  # Save file to file_path (instance/ + 'files' + filename)
 
-        # TODO: Call to talk to text
+        # Convert audio file to text (String)
+        r = sr.Recognizer()
+        harvard = sr.AudioFile(file_path)
+        with harvard as source:
+            audio = r.record(source)
+        print(r.recognize_google(audio))
+
+        # delete the file
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        else:
+            print("The file does not exist.")
+
         # TODO: pipe results from talk to text to nlp model
         # TODO: pipe model results to results page as arguement
 

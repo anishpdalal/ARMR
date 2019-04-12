@@ -3,6 +3,7 @@ from wtforms import PasswordField, StringField, SubmitField, \
     SelectField, FileField, IntegerField
 from wtforms.validators import DataRequired, InputRequired, ValidationError
 from flask_wtf.file import FileRequired
+from werkzeug import secure_filename
 
 
 class RegistrationForm(FlaskForm):
@@ -28,6 +29,13 @@ class UploadFileForm(FlaskForm):
     def validate_mrn(form, field):
         if len(str(field.data)) != 7:
             raise ValidationError('MRN must be 7 digits.')
+
+    def validate_file_selector(form, field):
+        f = field.data
+        filename = secure_filename(f.filename)
+        if filename[-4:] != '.wav':
+            raise ValidationError('File type must be .wav')
+
 
 class ModelResultsForm(FlaskForm):
     """Class for uploading file when submitted"""
