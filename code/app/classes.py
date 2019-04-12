@@ -66,7 +66,7 @@ class Data(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.now(tz))
 
     def __init__(self, physician_id, transcription_id, text, entity,
-                 start, end, label, subject_id):
+                 start, end, label, subject_id, timestamp):
         """Notes:
          - physician_id should be automatically set after logging in, not input each time
          - transcription_id should be  generated per transcription upload"""
@@ -79,6 +79,7 @@ class Data(db.Model):
         self.end = end  # end index of entity in text
         self.label = label  # label given from model for entity
         self.subject_id = subject_id  # subject id that maps to EMR sections (i.e. diagnosis, RFV, prescription, etc)
+        self.timestamp = timestamp
 
 
 @login_manager.user_loader
