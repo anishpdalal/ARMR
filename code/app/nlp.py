@@ -43,8 +43,8 @@ def categorize_note(model, text):
         result = results[i]
         next_result = results[i+1] if i < len(results)-1 else None
         category = str(result[0])
-        start = result[2] - 1 if i != 0 else result[2] + 1
-        end = next_result[1] - 2 if next_result else None
+        start = result[2] if i != 0 else result[2]
+        end = next_result[1] if next_result else None
         if end:
             categories[category] = {'text': doc[start:end].text}
         else:
@@ -57,9 +57,9 @@ def parse_entities(model, text):
     medications = []
     for entity in model(text).ents:
         if entity.label_ == 'DISEASE':
-            diseases.append({'name': entity})
+            diseases.append({'name': str(entity)})
         else:
-            medications.append({'name': entity})
+            medications.append({'name': str(entity)})
     return diseases, medications
 
 
