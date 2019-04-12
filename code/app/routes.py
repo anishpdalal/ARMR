@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, \
 from flask_login import current_user, login_user, login_required, logout_user
 from app.classes import User, Data
 from app.forms import LogInForm, RegistrationForm, UploadFileForm, \
-    ModelResultsForm 
+    ModelResultsForm
 from app.nlp import prepare_note
 from app import db, login_manager, spacy_model
 from datetime import timedelta, datetime
@@ -73,13 +73,14 @@ def logout():
 @login_required
 def upload():
     """Upload a file from a client machine."""
-    file = UploadFileForm()  
-    if file.validate_on_submit():  
-        f = file.file_selector.data  
+    file = UploadFileForm()
+    if file.validate_on_submit():
+        f = file.file_selector.data
         filename = secure_filename(f.filename)
         file_dir_path = os.path.join(application.instance_path, 'files')
         file_path = os.path.join(file_dir_path, filename)
-        f.save(file_path)  # Save file to file_path (instance/ + 'files' + filename)
+        # Save file to file_path (instance/ + 'files' + filename)
+        f.save(file_path)
 
         file_dir_path = os.path.join(application.instance_path, 'files')
         file_path = os.path.join(file_dir_path, filename)
@@ -150,8 +151,10 @@ def results(filename):
         db.session.commit()
 
         # TODO: query physician id
-        # TODO: autogenerate transcription id (or maybe make this an identifying string?)
+        # TODO: autogenerate transcription id (or maybe make this
+        # an identifying string?)
 
         return redirect(url_for('upload'))
 
-    return render_template('results.html', form=form, titles=proper_title_keys, result=example_result)
+    return render_template('results.html', form=form, titles=proper_title_keys,
+                           result=example_result)
