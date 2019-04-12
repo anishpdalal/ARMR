@@ -19,6 +19,7 @@ import re
 @application.route('/', methods=('GET', 'POST'))
 @application.route("/index", methods=('GET', 'POST'))
 def index():
+    """The homepage for the website."""
     login_form = LogInForm()
     if login_form.validate_on_submit():
         username = login_form.username.data
@@ -36,19 +37,21 @@ def index():
     return render_template('index.html', form=login_form)
 
 
-@application.before_request
-def make_session_permanent():
-    session.permanent = True
-    application.permanent_session_lifetime = timedelta(minutes=30)
+# @application.before_request
+# def make_session_permanent():
+#     session.permanent = True
+#     application.permanent_session_lifetime = timedelta(minutes=30)
 
 
 @login_manager.user_loader
 def load_user(id):  # id is the ID in User.
+    """Finds the user with the given user id."""
     return User.query.get(id)
 
 
 @application.route('/register', methods=('GET', 'POST'))
 def register():
+    """Page for new users to register."""
     form = RegistrationForm(request.form, null=True, blank=True)
     if request.method == 'POST':
         if form.validate() is False:
@@ -68,6 +71,7 @@ def register():
 @application.route('/logout')
 @login_required
 def logout():
+    """Log out the user."""
     logout_user()
     return redirect(url_for('index'))
 
@@ -75,7 +79,7 @@ def logout():
 @application.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
-    """upload a file from a client machine."""
+    """Upload a file from a client machine."""
     file = UploadFileForm()  
     if file.validate_on_submit():  
         f = file.file_selector.data  
