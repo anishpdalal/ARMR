@@ -4,7 +4,7 @@ The Electronic Medical Record (EMR) is patient-specific health care information 
 
 ## Getting Started
 
-ARMR is live! Go to http://13.57.195.85/ and follow instructions here https://msds698.github.io/ARMR/tutorial.html#tutorial-for-using-armr
+ARMR is live! Go to http://54.183.87.69 and follow instructions here https://msds698.github.io/ARMR/tutorial.html#tutorial-for-using-armr
 
 ## Prerequisites
 
