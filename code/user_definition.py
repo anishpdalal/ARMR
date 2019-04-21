@@ -1,9 +1,9 @@
-ec2_address = "ec2-54-191-39-26.us-west-2.compute.amazonaws.com"
+ec2_address = "ec2-13-57-51-137.us-west-1.compute.amazonaws.com"
 user = "ec2-user"
-key_file = "/nkkacirek.pem"
+key_file = "/.ssh/anishmsd692.pem"
 git_repo_owner = "MSDS698"
 git_repo_name = "ARMR"
-git_user_id = "nkacirek1"
+git_user_id = "anishpdalal"
 aws_access_key_id = None
 aws_secret_access_key = None
 bucket_name = 'msds-armr'
