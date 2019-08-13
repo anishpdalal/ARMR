@@ -16,7 +16,7 @@ You can download and listen to the file example.wav used for the demo. You will 
 
 ## Getting Started
 
-ARMR is live! Go to http://13.57.51.137 and follow instructions here https://msds698.github.io/ARMR/tutorial.html#tutorial-for-using-armr
+follow instructions here https://msds698.github.io/ARMR/tutorial.html#tutorial-for-using-armr
 
 ## Prerequisites
 
